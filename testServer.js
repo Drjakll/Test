@@ -18,13 +18,13 @@ app.get("/", function(req, res){
 });
 
 app.post("/", function(req, res){
-	console.log("I got it");
 	var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 	var VERIFY_URL = "https://hcaptcha.com/siteverify";
 	var token = req.body["h-captcha-response"];
 	var data = {'secret': SECRET_KEY, 'response': token};
-	console.log(data);
-	res.send(data['success']);
+	var response = http.post(VERIFY_URL, data);
+	console.log(response.content);
+	res.send(response.content);
 });
 
 app.listen(process.env.PORT || 3000, function(){
