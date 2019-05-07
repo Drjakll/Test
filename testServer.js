@@ -22,7 +22,7 @@ app.post("/", function(req, res){
 	var VERIFY_URL = "https://hcaptcha.com/siteverify";
 	var token = req.body["h-captcha-response"];
 	var data = {'secret': SECRET_KEY, 'response': token};
-	var response = http.post(VERIFY_URL, data);
+	var response = https.post(VERIFY_URL, data);
 	console.log(response.content);
 	res.send(response.content);
 });
