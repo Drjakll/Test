@@ -5,6 +5,7 @@ var URI = 'mongodb://localhost:27017/?gssapiServiceName=mongodb';
 var dataBase = 'shop';
 var body = require('body-parser');
 var fs = require('fs');
+const {verify} = require('hcaptcha');
 
 
 app.use(express.static(__dirname));
