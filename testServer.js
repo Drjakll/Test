@@ -6,6 +6,7 @@ var dataBase = 'shop';
 var body = require('body-parser');
 var fs = require('fs');
 
+
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + "/views"));
 app.set('view engine', 'ejs');
@@ -21,10 +22,11 @@ app.post("/", function(req, res){
 	var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 	var VERIFY_URL = "https://hcaptcha.com/siteverify";
 	var token = req.body["h-captcha-response"];
-	var data = {'secret': SECRET_KEY, 'response': token};
-	var response = https.post(VERIFY_URL, data);
-	console.log(response.content);
-	res.send(response.content);
+	
+	verify(SECRET_KEY, token).then(function(data){
+		console.log(data);
+		res.send(data);
+	}).catch(console.error);
 });
 
 app.listen(process.env.PORT || 3000, function(){
