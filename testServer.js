@@ -19,7 +19,7 @@ app.get("/", function(req, res){
 	res.render("testrun", {});
 });
 
-app.post("/", function(req, res){
+app.post("/verify", function(req, res){
 	var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 	var VERIFY_URL = "https://hcaptcha.com/siteverify";
 	var token = req.body["h-captcha-response"];
@@ -28,6 +28,10 @@ app.post("/", function(req, res){
 		console.log(data);
 		res.send(data);
 	}).catch(console.error);
+});
+
+app.get("/verify", function(req, res){
+	res.redirect("/");
 });
 
 app.listen(process.env.PORT || 3000, function(){
