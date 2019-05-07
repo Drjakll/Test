@@ -25,7 +25,7 @@
 
   "scripts": {
 
-    "start": "node testserver.js"
+    "start": "node testServer.js"
 
   }
 
