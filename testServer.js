@@ -23,12 +23,8 @@ app.post("/", function(req, res){
 	var VERIFY_URL = "https://hcaptcha.com/siteverify";
 	var token = req.body["h-captcha-response"];
 	var data = {'secret': SECRET_KEY, 'response': token};
-	console.log(token);
-	res.redirect("/");
-});
-
-app.post("https://hcaptcha.com/siteverify", function(req, res){
-	console.log("Hi");
+	console.log(data);
+	res.send(data['success']);
 });
 
 app.listen(process.env.PORT || 3000, function(){
