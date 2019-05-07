@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Home Page
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type = "text/css" href = "Style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+</head>
+<body ng-app = "main" ng-controller = "main">
+	<div id = "upleftcorner">
+		
+	</div>
+	<div id = "main">
+		<form method = "POST" action = "">
+			<div id = "misc">
+			</div>
+			<div id = "navigationWrapper">
+				<div id = "searchbarWrapper">
+					<input type = "search" placeholder = "Search" id = "searchbar"><button type = "submit" id = "searchButton"> Search </button> 
+					<a id = "accButton"> Sign In </a> <a id = "accButton"> Sign Up </a>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<div id = "categoriesWrapper">
+	
+		<form method = "POST" action = "/AddCategory">
+			<p>Add Category : </p> <input type = "text" name = "addCategory" placeholder = "Category" id = "addCategory"><button type = "submit" id = "add">Add</button>
+		</form>
+		
+		<form method = "POST" action = "/AddLink">
+			<p>Add Link : </p> 
+			<select name = "Category">
+				<option ng-repeat = "(x,y) in categories" value = "{{x}}"> {{x}}</option>
+			</select><br/>
+			<input type = "text" name = "link" placeholder = "Link name" id = "addLink"><button type = "submit" id = "add">Add</button>
+		</form>
+		
+		<form method = "POST" action = "/RemoveCategory">
+			<p>Remove a Category : </p> 
+			<select name = "Category" ng-model = "Category">
+				<option ng-repeat = "(x,y) in categories" value = "{{x}}"> {{x}}</option>
+			</select>
+			<button type = "submit" id = "remove">Remove</button>
+		</form>
+		
+		<form method = "POST" action = "/RemoveLink">
+			<p>Remove a Link : </p>
+			<input type = "text" name = "Category" style = "display: none" value = "{{Category}}">
+			<select name = "link">
+				<option ng-repeat = "(x,y) in categories[Category]" value = "{{x}}"> {{x}} </option>
+			</select>
+			<button type = "submit" id = "remove">Remove</button>
+		</form>
+		
+		<div id = "category"><a href = "Admin" id = "Home">Home</a>
+		</div>
+		
+		<div id = "category" ng-repeat = "(x,y) in categories"> {{x}}
+			<div id = "subCategory"><a ng-click = "changePage(x,s)" href = "#!listing" id = "item" ng-repeat = "(s,t) in y">{{s}}</a></div>
+		</div>
+		
+	</div>
+	
+	<div id = "view" ng-view></div>
+
+	<script>
+		var app = angular.module('main', ['ngRoute']);
+		
+		app.config(function($routeProvider){
+			$routeProvider
+			.when("/", {
+				templateUrl : "Home.ejs",
+				controller : "main"
+				})
+			.when("/listing",{
+				templateUrl : "AdminListing.ejs",
+				controller : "main"
+			});
+		});
+		
+		app.controller("main", function($scope){
+			var data = <%- JSON.stringify(data)%>;
+			$scope.categories = {};
+			for(var i in data){
+				var items = {};
+				for(var j in data[i].Items){
+					items[j] = data[i].Items[j];
+				}
+				$scope.categories[data[i].CategoryName] = items;
+			}
+			
+			$scope.changePage = function(category, item){
+				$scope.items = $scope.categories[category][item];
+				$scope.link = item;
+			};
+		});
+		
+	</script>	
+</body>
+</html>
