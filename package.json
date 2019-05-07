@@ -9,7 +9,7 @@
     "ejs": "latest",
     "express": "latest",
     "hcaptcha": "0.0.1",
-    "mongodb": "latest"
+    "mongodb": "latest",
 	"hcaptcha": "latest"
   },
   "scripts": {
