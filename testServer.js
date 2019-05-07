@@ -16,7 +16,7 @@ app.use(body.json());
 app.use(body.urlencoded({extended: true}));
 
 app.get("/", function(req, res){
-	res.render("testrun", {});
+	res.render("testrun", {msg : "Hi!"});
 });
 
 app.post("/verify", function(req, res){
