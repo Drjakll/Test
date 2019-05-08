@@ -26,7 +26,7 @@ app.post("/", function(req, res){
 	verify(SECRET_KEY, currentToken).then(function(data){
 		console.log(data);
 		if(data["success"]){
-			tokenList.push(token);
+			tokenList[currentToken] = 1;
 		}
 		res.redirect("/");
 	}).catch(console.error);
