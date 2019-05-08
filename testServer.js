@@ -16,22 +16,22 @@ app.use(body.json());
 app.use(body.urlencoded({extended: true}));
 
 app.get("/", function(req, res){
-	res.render("testrun", {msg : "Hi!"});
+	res.render("testrun", {});
 });
 
-app.post("/verify", function(req, res){
+app.post("/", function(req, res){
 	var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 	var VERIFY_URL = "https://hcaptcha.com/siteverify";
 	var token = req.body["h-captcha-response"];
 	
 	verify(SECRET_KEY, token).then(function(data){
 		console.log(data);
-		res.send(data);
+		res.send({success : data['success']});
 	}).catch(console.error);
 });
 
 app.get("/verify", function(req, res){
-	res.redirect("/");
+	
 });
 
 app.listen(process.env.PORT || 3000, function(){
