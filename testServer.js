@@ -1,10 +1,6 @@
 var express = require('express');
 var app = express();
-var mongodb = require('mongodb').MongoClient;
-var URI = 'mongodb://localhost:27017/?gssapiServiceName=mongodb';
-var dataBase = 'shop';
 var body = require('body-parser');
-var fs = require('fs');
 const {verify} = require('hcaptcha');
 
 
@@ -15,27 +11,40 @@ app.set('view engine', 'ejs');
 app.use(body.json());
 app.use(body.urlencoded({extended: true}));
 
-var verified = "";
+var token = "";
+var tokenList = {};
+var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 
 app.get("/", function(req, res){
-	verified = "";
+	token = "";
 	res.render("testrun", {});
 });
 
 app.post("/", function(req, res){
-	var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
-	var token = req.body["h-captcha-response"];
-	
-	verify(SECRET_KEY, token).then(function(data){
+	var currentToken = req.body["h-captcha-response"];
+	token = currentToken;
+	verify(SECRET_KEY, currentToken).then(function(data){
 		console.log(data);
-		if(data["success"])
-			verified = token;
+		if(data["success"]){
+			tokenList.push(token);
+		}
 		res.redirect("/");
 	}).catch(console.error);
 });
 
+app.post("/gettoken", function(req, res){
+	if(token != "")
+		console.log("token is: " + token);
+	res.send(token);
+});
+
 app.post("/verify", function(req, res){
-	res.send(verified);
+	var verified = false;
+	if(tokenList[res.body.token] != null){
+		delete token[res.body.token];
+		verified = true;
+	}
+	res.send({"verified": verified});
 });
 
 app.listen(process.env.PORT || 3000, function(){
