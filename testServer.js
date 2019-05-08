@@ -15,7 +15,10 @@ app.set('view engine', 'ejs');
 app.use(body.json());
 app.use(body.urlencoded({extended: true}));
 
+var verified = "";
+
 app.get("/", function(req, res){
+	verified = "";
 	res.render("testrun", {});
 });
 
@@ -25,12 +28,14 @@ app.post("/", function(req, res){
 	
 	verify(SECRET_KEY, token).then(function(data){
 		console.log(data);
-		res.send({token : token});
+		if(data["success"])
+			verified = token;
+		res.redirect("/");
 	}).catch(console.error);
 });
 
-app.get("/verify", function(req, res){
-	
+app.post("/verify", function(req, res){
+	res.send(verified);
 });
 
 app.listen(process.env.PORT || 3000, function(){
