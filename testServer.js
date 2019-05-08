@@ -40,9 +40,9 @@ app.post("/gettoken", function(req, res){
 
 app.post("/verify", function(req, res){
 	var verified = false;
-	if(tokenList[res.body.token] != null){
-		console.log(res.body.token);
-		delete token[res.body.token];
+	if(tokenList[req.body.token] != null){
+		console.log(req.body.token);
+		delete token[req.body.token];
 		verified = true;
 	}
 	res.send({"verified": verified});
