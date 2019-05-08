@@ -24,7 +24,7 @@ app.post("/", function(req, res){
 	var token = req.body["h-captcha-response"];
 	
 	verify(SECRET_KEY, token).then(function(data){
-		console.log(token + "\n" + data);
+		console.log(data);
 		res.send({token : token});
 	}).catch(console.error);
 });
