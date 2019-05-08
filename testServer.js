@@ -28,7 +28,8 @@ app.post("/", function(req, res){
 	
 	verify(SECRET_KEY, token).then(function(data){
 		console.log(data);
-		verified = token;
+		if(data["success"])
+			verified = "verified";
 		res.redirect("/");
 	}).catch(console.error);
 });
