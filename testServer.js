@@ -21,12 +21,11 @@ app.get("/", function(req, res){
 
 app.post("/", function(req, res){
 	var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
-	var VERIFY_URL = "https://hcaptcha.com/siteverify";
 	var token = req.body["h-captcha-response"];
 	
 	verify(SECRET_KEY, token).then(function(data){
-		console.log(data);
-		res.send({success : data['success']});
+		console.log(token + "\n" + data);
+		res.send({token : token});
 	}).catch(console.error);
 });
 
