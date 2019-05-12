@@ -3,8 +3,6 @@ var app = express();
 var body = require('body-parser');
 const {verify} = require('hcaptcha');
 
-app.use(eIP().getIpInfoMiddleware);
-app.use(ip.mw());
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + "/views"));
 app.set('view engine', 'ejs');
