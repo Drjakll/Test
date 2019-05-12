@@ -32,7 +32,7 @@ app.post("/", function(req, res){
 		if(data["success"]){
 			getIP(function(err, ip){
 				if(err)
-					trow err;
+					throw err;
 				IPPass[ip] = currentToken;
 			});
 		}
