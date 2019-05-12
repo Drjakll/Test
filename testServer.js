@@ -48,7 +48,7 @@ app.post("/gettoken", function(req, res){
 
 app.post("/verify", function(req, res){
 	var verified = false;
-	if(tokenList[req.body.ip] != null ){
+	if(IPPass[req.body.ip] != null ){
 		console.log(req.body.ip);
 		delete IPPass[req.body.ip];
 		verified = true;
