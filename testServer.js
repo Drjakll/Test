@@ -29,7 +29,8 @@ var getIP = expIP({
 });
 
 app.get("/", function(req, res){
-	console.log(req.ipInfo);
+	console.log(req.ip);
+	console.log(req.ips);
 	res.render("testrun", {});
 
 });
