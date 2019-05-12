@@ -27,8 +27,9 @@ app.post("/", function(req, res){
 	var currentToken = req.body["h-captcha-response"];
 	
 	verify(SECRET_KEY, currentToken).then(function(data){
-
-		if(data["success"]){;
+		console.log("checking success");
+		if(data["success"]){
+			console.log("Sucess!");
 			getIP(function(err, ip){
 				if(err)
 					throw err;
