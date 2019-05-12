@@ -1,9 +1,6 @@
 var express = require('express');
 var app = express();
 var body = require('body-parser');
-var ip = require('request-ip');
-var eIP = require('express-ip');
-var expIP = require('external-ip');
 const {verify} = require('hcaptcha');
 
 app.use(eIP().getIpInfoMiddleware);
@@ -15,22 +12,13 @@ app.set('trust proxy', true);
 
 app.use(body.json());
 app.use(body.urlencoded({extended: true}));
-app.use(eIP().getIpInfoMiddleware);
 
 var token = "";
 var IPPass = {};
 var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 
-var getIP = expIP({
-	replace: true,
-	services: ['https://ipinfo.io/ip'],
-	timeout: 600,
-	getIP: 'parallel'
-});
-
 app.get("/", function(req, res){
-	console.log(req.ip);
-	console.log(req.ips);
+
 	res.render("testrun", {});
 
 });
@@ -42,12 +30,8 @@ app.post("/", function(req, res){
 		console.log("checking success");
 		if(data["success"]){
 			console.log("Sucess!");
-			getIP(function(err, ip){
-				if(err)
-					throw err;
-				IPPass[ip] = currentToken;
-				console.log(ip);
-			});
+			IPPass[req.ip] = currentToken;
+			console.log(req.ip);
 		}
 		res.redirect("/");
 	}).catch(console.error);
