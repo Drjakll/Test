@@ -8,9 +8,11 @@
     "cookie-parser": "latest",
     "ejs": "latest",
     "express": "latest",
+    "express-ip": "^1.0.3",
     "hcaptcha": "0.0.1",
+    "ip": "^1.1.5",
     "mongodb": "latest",
-	"hcaptcha": "latest"
+    "request-ip": "^2.1.3"
   },
   "scripts": {
     "start": "node testServer.js"
