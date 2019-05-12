@@ -20,11 +20,6 @@ var IPPass = {};
 var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 
 app.get("/", function(req, res){
-	getIP(function(err, ip){
-		if(err)
-			throw err;
-		console.log(ip);
-	});
 	res.render("testrun", {});
 });
 
@@ -33,13 +28,11 @@ app.post("/", function(req, res){
 	
 	verify(SECRET_KEY, currentToken).then(function(data){
 
-		if(data["success"]){
-			console.log("Succeeeded!");
-			getIP((err, ip)=>{
+		if(data["success"]){;
+			getIP(function(err, ip){
 				if(err)
 					throw err;
 				IPPass[ip] = currentToken;
-				console.log(ip);
 			});
 		}
 		res.redirect("/");
