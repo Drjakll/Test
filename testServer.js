@@ -3,7 +3,7 @@ var app = express();
 var body = require('body-parser');
 var ip = require('request-ip');
 var eIP = require('express-ip');
-var getIP = require('external-ip')();
+var expIP = require('external-ip');
 const {verify} = require('hcaptcha');
 
 app.use(eIP().getIpInfoMiddleware);
@@ -18,6 +18,13 @@ app.use(body.urlencoded({extended: true}));
 var token = "";
 var IPPass = {};
 var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
+
+var getIP = expIP({
+	replace: true,
+	services: ['https://ipinfo.io/ip'],
+	timeout: 600,
+	getIP: 'parallel'
+});
 
 app.get("/", function(req, res){
 	res.render("testrun", {});
