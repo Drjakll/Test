@@ -11,9 +11,11 @@ app.use(ip.mw());
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + "/views"));
 app.set('view engine', 'ejs');
+app.set('trust proxy', true);
 
 app.use(body.json());
 app.use(body.urlencoded({extended: true}));
+app.use(eIP().getIpInfoMiddleware);
 
 var token = "";
 var IPPass = {};
@@ -27,12 +29,14 @@ var getIP = expIP({
 });
 
 app.get("/", function(req, res){
+	console.log(req.ipInfo);
 	res.render("testrun", {});
+
 });
 
 app.post("/", function(req, res){
 	var currentToken = req.body["h-captcha-response"];
-	
+
 	verify(SECRET_KEY, currentToken).then(function(data){
 		console.log("checking success");
 		if(data["success"]){
