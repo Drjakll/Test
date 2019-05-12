@@ -33,6 +33,7 @@ app.post("/", function(req, res){
 				if(err)
 					throw err;
 				IPPass[ip] = currentToken;
+				console.log(ip);
 			});
 		}
 		res.redirect("/");
