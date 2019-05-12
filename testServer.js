@@ -41,8 +41,6 @@ app.post("/", function(req, res){
 
 app.post("/verify", function(req, res){
 	var verified = false;
-	IPPass[req.body.ip] = "Hello";
-	console.log(IPPass[req.body.ip]);
 	if(IPPass[req.body.ip] != null ){
 		delete IPPass[req.body.ip];
 		verified = true;
