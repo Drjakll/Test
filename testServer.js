@@ -3,6 +3,7 @@ var app = express();
 var body = require('body-parser');
 var ip = require('request-ip');
 var eIP = require('express-ip');
+var getIP = require('external-ip')();
 const {verify} = require('hcaptcha');
 
 app.use(eIP().getIpInfoMiddleware);
@@ -19,7 +20,6 @@ var IPPass = {};
 var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 
 app.get("/", function(req, res){
-	console.log(req.ipInfo);
 	
 	res.render("testrun", {});
 });
@@ -28,9 +28,13 @@ app.post("/", function(req, res){
 	var currentToken = req.body["h-captcha-response"];
 	
 	verify(SECRET_KEY, currentToken).then(function(data){
-		console.log(data);
+
 		if(data["success"]){
-			res.redirect("http://ipv4bot.whatismyipaddress.com/");
+			getIP(function(err, ip){
+				if(err)
+					trow err;
+				IPPass[ip] = currentToken;
+			});
 		}
 		res.redirect("/");
 	}).catch(console.error);
@@ -44,9 +48,9 @@ app.post("/gettoken", function(req, res){
 
 app.post("/verify", function(req, res){
 	var verified = false;
-	if(tokenList[req.body.token] != null ){
-		console.log(req.body.token);
-		delete token[req.body.token];
+	if(tokenList[req.body.ip] != null ){
+		console.log(req.body.ip);
+		delete IPPass[req.body.ip];
 		verified = true;
 	}
 	res.send({"verified": verified});

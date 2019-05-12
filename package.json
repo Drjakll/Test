@@ -9,6 +9,7 @@
     "ejs": "latest",
     "express": "latest",
     "express-ip": "^1.0.3",
+    "external-ip": "^2.1.1",
     "hcaptcha": "0.0.1",
     "ip": "^1.1.5",
     "mongodb": "latest",
