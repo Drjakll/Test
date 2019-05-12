@@ -1,9 +1,12 @@
 var express = require('express');
 var app = express();
 var body = require('body-parser');
+var ip = require('request-ip');
+var eIP = require('express-ip');
 const {verify} = require('hcaptcha');
 
-
+app.use(eIP().getIpInfoMiddleware);
+app.use(ip.mw());
 app.use(express.static(__dirname));
 app.use(express.static(__dirname + "/views"));
 app.set('view engine', 'ejs');
@@ -12,21 +15,22 @@ app.use(body.json());
 app.use(body.urlencoded({extended: true}));
 
 var token = "";
-var tokenList = {};
+var IPPass = {};
 var SECRET_KEY = "0xab2c774B811883a775885266c5166B6697571417";
 
 app.get("/", function(req, res){
-	token = "";
+	console.log(req.ipInfo);
+	
 	res.render("testrun", {});
 });
 
 app.post("/", function(req, res){
 	var currentToken = req.body["h-captcha-response"];
-	token = currentToken;
+	
 	verify(SECRET_KEY, currentToken).then(function(data){
 		console.log(data);
 		if(data["success"]){
-			tokenList[currentToken] = 1;
+			res.redirect("http://ipv4bot.whatismyipaddress.com/");
 		}
 		res.redirect("/");
 	}).catch(console.error);
@@ -40,7 +44,7 @@ app.post("/gettoken", function(req, res){
 
 app.post("/verify", function(req, res){
 	var verified = false;
-	if(tokenList[req.body.token] != null){
+	if(tokenList[req.body.token] != null ){
 		console.log(req.body.token);
 		delete token[req.body.token];
 		verified = true;
