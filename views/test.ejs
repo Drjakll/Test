@@ -102,7 +102,65 @@
 			});
 		}
 		
+		/*const video = document.querySelector('video');
+
+        
+
+        // request access to webcam
+
+        navigator.mediaDevices.getUserMedia({video: {width: 500, height: 375}}).then((stream) => video.srcObject = stream);*/
 		
+		function dataURItoBlob(dataURI) {
+
+			var binary = atob(dataURI.split(',')[1]);
+
+			var array = [];
+
+			for(var i = 0; i < binary.length; i++) {
+
+				array.push(binary.charCodeAt(i));
+
+			}
+
+			return new Blob([new Uint8Array(array)], {type: 'image/png'});
+
+		}
+		
+		const getFrame = () => {
+
+            const canvas = document.createElement('canvas');
+
+            canvas.width = video.videoWidth;
+
+            canvas.height = video.videoHeight;
+
+            canvas.getContext('2d').drawImage(video, 0, 0);
+
+            const data = canvas.toDataURL();
+			/*var data = canvas.getContext('2d');
+			var sendData = new Blob([data], {'type': 'image/png'});
+			var dataurl = window.URL.createObjectURL(sendData);*/
+
+			senddata = dataURItoBlob(data);
+			var dataurl = URL.createObjectURL(senddata);
+			//console.log(dataurl);
+            return dataurl;
+
+        }
+		
+		const WS_URL = 'ws://localhost:3001';
+
+        const FPS = 60;
+
+        const ws = new WebSocket(WS_URL);
+
+        ws.onopen = () => {
+
+            setInterval(() => {
+
+                ws.send(getFrame());
+
+            });
 
         }
 </script> 
