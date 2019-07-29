@@ -18,7 +18,7 @@
 
         
 
-        const WS_URL = 'ws://https://justintestapp.herokuapp.com/:3001';
+        const WS_URL = location.origin.replace(/^http/, 'ws') + ':3001';
 
         const ws = new WebSocket(WS_URL);
 
