@@ -95,10 +95,10 @@
    	 return (navigator.getUserMedia || navigator.webkitGetUserMedia ||navigator.mozGetUserMedia || navigator.msGetUserMedia);
 
 	}
-
+	console.log(hasGetUserMedia());
 	  var video = document.getElementById("streamvideo");
 
-		if (hasGetUserMedia()) {
+		if (navigator.getUserMedia) {
 		  navigator.getMedia ({ video: true, audio: false },
 			function (stream) {
 			  video.srcObject = stream;
