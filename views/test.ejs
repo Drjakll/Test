@@ -82,7 +82,7 @@
 	  console.log(annyang.isListening());*/
 	  
 	  
-	navigator.getMedia = ( navigator.getUserMedia ||
+	/*navigator.getMedia = ( navigator.getUserMedia ||
 
                        navigator.webkitGetUserMedia ||
 
@@ -94,11 +94,11 @@
 
    	 return (navigator.getUserMedia || navigator.webkitGetUserMedia ||navigator.mozGetUserMedia || navigator.msGetUserMedia);
 
-	}
-	console.log(navigator.getUserMedia);
+	}*/
+	console.log(navigator.getUserMedia());
 	  var video = document.getElementById("streamvideo");
 
-		if (navigator.getUserMedia) {
+		if (navigator.getUserMedia()) {
 		  navigator.getMedia ({ video: true, audio: false },
 			function (stream) {
 			  video.srcObject = stream;
