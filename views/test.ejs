@@ -89,10 +89,16 @@
                        navigator.mozGetUserMedia ||
 
                        navigator.msGetUserMedia);
+		       
+        function hasGetUserMedia() {
+
+   	 return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||navigator.mozGetUserMedia || navigator.msGetUserMedia);
+
+	}
 
 	  var video = document.getElementById("streamvideo");
 
-		if (navigator.mediaDevices.getUserMedia) {
+		if (hasGetUserMedia()) {
 		  navigator.getMedia ({ video: true, audio: false },
 			function (stream) {
 			  video.srcObject = stream;
@@ -107,8 +113,10 @@
         
 
         // request access to webcam
+	
+	
 
-        navigator.mediaDevices.getUserMedia({video: {width: 500, height: 375}}).then((stream) => video.srcObject = stream);*/
+        navigator.getUserMedia({video: {width: 500, height: 375}}).then((stream) => video.srcObject = stream);*/
 		
 		function dataURItoBlob(dataURI) {
 
