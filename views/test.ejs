@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/speechkitt.min.js"></script>
+	<style>
+		#container {
+			margin: 0px auto;
+			width: 500px;
+			height: 375px;
+			border: 10px #333 solid;
+		}
+		#videoElement {
+			width: 500px;
+			height: 375px;
+			background-color: #666;
+		}
+	</style>
+</header>
+<body>
+ <div id="container">
+	<video autoplay = "true" id = "streamvideo"></video> <br><br>
+</div> 
+<div id = "text"></div>
+<select id = "Category">
+	<option> January </option>
+	<option> February </option>
+	<option> March </option>
+	<option> April </option>
+	<option> May </option>
+	<option> June </option>
+	<option> July </option>
+	<option> August </option>
+	<option> September </option>
+	<option> October </option>
+	<option> November </option>
+	<option> December </option>
+</select>
+<script>
+		
+		//console.log("Hello");
+	/*	var output = document.getElementById("text");
+		var select = document.getElementById("Category");
+	  var commands = {
+		'*tag': function(tag) {output.innerHTML += " " + tag;
+			switch(tag){
+				case "January": select.options[0].selected = true;
+				break;
+				case "February": select.options[1].selected = true;
+				break;
+				case "March": select.options[2].selected = true;
+				break;
+				case "April": select.options[3].selected = true;
+				break;
+				case "May": select.options[4].selected = true;
+				break;
+				case "June": select.options[5].selected = true;
+				break;
+				case "July": select.options[6].selected = true;
+				break;
+				case "August": select.options[7].selected = true;
+				break;
+				case "September": select.options[8].selected = true;
+				break;
+				case "October": select.options[9].selected = true;
+				break;
+				case "November": select.options[10].selected = true;
+				break;
+				case "December": select.options[11].selected = true;
+				break;
+			}
+		}
+		
+		};
+	  
+	  annyang.addCommands(commands);
+	  annyang.setLanguage("en-US");*/
+	  
+	  annyang.start({ autoRestart: true, continuous: false });
+	  
+	  
+	  console.log(annyang.isListening());
+	  
+	  
+	navigator.getMedia = ( navigator.getUserMedia ||
+
+                       navigator.webkitGetUserMedia ||
+
+                       navigator.mozGetUserMedia ||
+
+                       navigator.msGetUserMedia);
+
+	  var video = document.getElementById("streamvideo");
+
+		if (navigator.mediaDevices.getUserMedia) {
+		  navigator.getMedia ({ video: true, audio: false },
+			function (stream) {
+			  video.srcObject = stream;
+			},
+			function (error) {
+			  console.log("Something went wrong!" + error);
+			});
+		}
+		
+		/*const video = document.querySelector('video');
+
+        
+
+        // request access to webcam
+
+        navigator.mediaDevices.getUserMedia({video: {width: 500, height: 375}}).then((stream) => video.srcObject = stream);*/
+		
+		function dataURItoBlob(dataURI) {
+
+			var binary = atob(dataURI.split(',')[1]);
+
+			var array = [];
+
+			for(var i = 0; i < binary.length; i++) {
+
+				array.push(binary.charCodeAt(i));
+
+			}
+
+			return new Blob([new Uint8Array(array)], {type: 'image/png'});
+
+		}
+		
+		const getFrame = () => {
+
+            const canvas = document.createElement('canvas');
+
+            canvas.width = video.videoWidth;
+
+            canvas.height = video.videoHeight;
+
+            canvas.getContext('2d').drawImage(video, 0, 0);
+
+            const data = canvas.toDataURL();
+			/*var data = canvas.getContext('2d');
+			var sendData = new Blob([data], {'type': 'image/png'});
+			var dataurl = window.URL.createObjectURL(sendData);*/
+
+			senddata = dataURItoBlob(data);
+			var dataurl = URL.createObjectURL(senddata);
+			//console.log(dataurl);
+            return dataurl;
+
+        }
+		
+		const WS_URL = 'ws://localhost:3001';
+
+        const FPS = 60;
+
+        const ws = new WebSocket(WS_URL);
+
+        ws.onopen = () => {
+
+            setInterval(() => {
+
+                ws.send(getFrame());
+
+            });
+
+        }
+</script> 
+</body>
+</html>
