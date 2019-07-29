@@ -9,6 +9,7 @@
   "author": "Justin",
   "license": "ISC",
   "dependencies": {
+    "ejs": "latest",
     "@ionic-native/speech-recognition": "^5.10.0",
     "artyom.js": "^1.0.6",
     "express": "^4.17.1",
