@@ -95,7 +95,7 @@
    	 return (navigator.getUserMedia || navigator.webkitGetUserMedia ||navigator.mozGetUserMedia || navigator.msGetUserMedia);
 
 	}
-	console.log(hasGetUserMedia());
+	console.log(navigator.getUserMedia);
 	  var video = document.getElementById("streamvideo");
 
 		if (navigator.getUserMedia) {
