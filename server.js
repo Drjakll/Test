@@ -6,11 +6,11 @@ var stream = require('stream');
 
 app.set('view engine', 'ejs');
 
-const WS_PORT = process.env.WS_PORT || 3001;
+const WS_PORT = process.env.PORT || 3001;
 
 const HTTP_PORT = process.env.PORT || 3000;
 
-const wsServer = new WebSocket.Server({ port: HTTP_PORT }, () => console.log(`WS server is listening at ${WS_PORT} ${HTTP_PORT}`));
+const wsServer = new WebSocket.Server({ port: WS_PORT }, () => console.log(`WS server is listening at ${WS_PORT} ${HTTP_PORT}`));
 
 
 let connectedClients = [];
