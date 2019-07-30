@@ -10,7 +10,7 @@ const WS_PORT = process.env.PORT || 3001;
 
 const HTTP_PORT = process.env.PORT || 3000;
 
-
+console.log(WS_PORT);
 
 const wsServer = new WebSocket.Server({ port: WS_PORT }, () => console.log(`WS server is listening at ws://localhost:${WS_PORT}`));
 
