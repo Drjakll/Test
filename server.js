@@ -1,23 +1,40 @@
 var express = require('express');
 var app = express();
-var WebSocket = require('ws');
+//var WebSocket = require('ws');
 var path = require('path');
-var stream = require('stream');
+//var stream = require('stream');
+var http = require('http');
+var server = http.createServer(app);
+var io = require('socket.io').listen(server, {pingInterval: 10000});
 
 app.set('view engine', 'ejs');
 
-const WS_PORT = 3000;
+app.use(express.static(__dirname + "/node_modules"));
+app.use(express.static(__dirname + "/views"));
 
-const HTTP_PORT = process.env.PORT || 3000;
+const WS_PORT = process.env.WS_PORT || 3001;
 
-const wsServer = new WebSocket.Server({ port: WS_PORT }, () => console.log(`WS server is listening at ${WS_PORT} ${HTTP_PORT}`));
+const HTTP_PORT = process.env.HTTP_PORT || 3000;
+
+
+
+//const wsServer = new WebSocket.Server({ port: WS_PORT }, () => console.log(`WS server is listening at ws://localhost:${WS_PORT}`));
 
 
 let connectedClients = [];
 
+var num = 0;
 
+io.on('connection', function(socket) {
+	console.log("a client connected");
+	socket.on('msg', function(data) {
+		num++;
+		console.log(num);
+      io.sockets.emit('newmsg', data);
+   });
+});
 
-wsServer.on('connection', (ws, req) => {
+/*wsServer.on('connection', (ws, req) => {
 
     console.log('Connected');
 
@@ -31,23 +48,28 @@ wsServer.on('connection', (ws, req) => {
 
         // send the base64 encoded frame to each connected ws
 
-        connectedClients.forEach((ws, i) => {
+        setTimeout(function() {
+			connectedClients.forEach((ws, i) => {
 
-            if (ws.readyState === ws.OPEN) { // check if it is still connected
-				//var sendData = new Buffer.from(data, 'binary');
-                ws.send(data); // send
+				if (ws.readyState === ws.OPEN) { // check if it is still connected
+					//var sendData = new Buffer.from(data, 'binary');
+					num++;
+					console.log(num);
+					let buff = new Buffer(data, 'base64');
+					let text = buff.toString('ascii');
+					ws.send(data); // send
 
-            } else { // if it's not connected remove from the array of connected ws
+				} else { // if it's not connected remove from the array of connected ws
 
-                connectedClients.splice(i, 1);
+					connectedClients.splice(i, 1);
 
-            }
+				}
 
-        });
-
+			});
+		}, 0);
     });
 
-});
+});*/
 
 app.get("/", function(req, res){
 	res.render("test");
@@ -57,5 +79,7 @@ app.get("/client", function(req, res){
 	res.render("client");
 });
 
-app.listen(HTTP_PORT, function(){
-});
+
+server.listen(HTTP_PORT);
+/*app.listen(HTTP_PORT, function(){
+});*/
