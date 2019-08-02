@@ -17,6 +17,7 @@
 		}
 	</style>
 </header>
+<script src = "/socket.io/socket.io.js"></script>
 <body>
  <div id="container">
 	<video autoplay = "true" id = "streamvideo"></video> <br><br>
@@ -76,10 +77,10 @@
 	  annyang.addCommands(commands);
 	  annyang.setLanguage("en-US");
 	  
-	  annyang.start({ autoRestart: true, continuous: false });
+	  annyang.start({ autoRestart: true, continuous: false });*/
 	  
 	  
-	  console.log(annyang.isListening());*/
+	 // console.log(annyang.isListening());
 	  
 	  
 	navigator.getMedia = ( navigator.getUserMedia ||
@@ -89,16 +90,10 @@
                        navigator.mozGetUserMedia ||
 
                        navigator.msGetUserMedia);
-		       
-        function hasGetUserMedia() {
 
-   	 return (navigator.getUserMedia || navigator.webkitGetUserMedia ||navigator.mozGetUserMedia || navigator.msGetUserMedia);
-
-	}
-	console.log(navigator.getUserMedia);
 	  var video = document.getElementById("streamvideo");
 
-		if (navigator.getUserMedia) {
+		if (navigator.mediaDevices.getUserMedia) {
 		  navigator.getMedia ({ video: true, audio: false },
 			function (stream) {
 			  video.srcObject = stream;
@@ -113,12 +108,10 @@
         
 
         // request access to webcam
-	
-	
 
-        navigator.getUserMedia({video: {width: 500, height: 375}}).then((stream) => video.srcObject = stream);*/
+        navigator.mediaDevices.getUserMedia({video: {width: 500, height: 375}}).then((stream) => video.srcObject = stream);*/
 		
-		function dataURItoBlob(dataURI) {
+		/*function dataURItoBlob(dataURI) {
 
 			var binary = atob(dataURI.split(',')[1]);
 
@@ -134,30 +127,58 @@
 
 		}
 		
+		var BASE64_MARKER = ';base64,';
+		
+		function convertDataURIToBinary(dataURI) {
+
+		  var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+
+		  var base64 = dataURI.split(',')[1];
+		  
+		  //console.log(base64);
+
+		  var raw = window.atob(base64);
+		  console.log(raw);
+		  var rawLength = raw.length;
+
+		  var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+
+
+		  for(i = 0; i < rawLength; i++) {
+
+			array[i] = raw.charCodeAt(i);
+
+		  }
+
+		  return array;
+
+		}
+		*/
 		const getFrame = () => {
+				const canvas = document.createElement('canvas');
 
-            const canvas = document.createElement('canvas');
+				canvas.width = video.videoWidth;
 
-            canvas.width = video.videoWidth;
+				canvas.height = video.videoHeight;
 
-            canvas.height = video.videoHeight;
+				canvas.getContext('2d').drawImage(video, 0, 0);
 
-            canvas.getContext('2d').drawImage(video, 0, 0);
-
-            const data = canvas.toDataURL();
-			/*var data = canvas.getContext('2d');
-			var sendData = new Blob([data], {'type': 'image/png'});
-			var dataurl = window.URL.createObjectURL(sendData);*/
-
-			senddata = dataURItoBlob(data);
+				const data = canvas.toDataURL('image/webp');
+			//var data = canvas.getContext('2d');
+			//var sendData = new Blob([data], {'type': 'image/png'});
+			//var dataurl = window.URL.createObjectURL(sendData);
+			
+			
+			//console.log(data);
+			//console.log(senddata);
+			//var dataurl = URL.createObjectURL(senddata);
 			//console.log(dataurl);
-            return senddata;
+            return data;
 
         }
-		
-		const WS_URL = "wss://justinclient.herokuapp.com/";
-		
-		console.log(WS_URL);
+		/*
+		const WS_URL = 'ws://localhost:3001';
 
         const FPS = 60;
 
@@ -169,9 +190,14 @@
 
                 ws.send(getFrame());
 
-            });
+            }, 0);
 
-        }
+        }*/
+	var socket = io();
+	
+	setInterval(function(){
+		socket.emit('msg', {message: getFrame()});
+	}, 17);
 </script> 
 </body>
 </html>

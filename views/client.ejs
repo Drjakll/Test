@@ -3,7 +3,7 @@
 <head>
 
     <title>Client</title>
-
+	<script src = "/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -18,22 +18,21 @@
 
         
 
-        const WS_URL = "wss://justinclient.herokuapp.com/"
-	
-	console.log(WS_URL);
+        /*const WS_URL = 'ws://localhost:3001';
 
         const ws = new WebSocket(WS_URL);
 
         ws.onopen = () => console.log(`Connected to ${WS_URL}`);
 
         ws.onmessage = message => {
+			
+			img.src = message.data;
 
-            // set the base64 string to the src tag of the image
-			var url = URL.createObjectURL(message.data);
-			console.log(url);
-            img.src = url;
-
-        }
+        }*/
+		var socket = io();
+		socket.on('newmsg', function(data) {
+			img.src = data.message;
+      })
 
     </script>
 
