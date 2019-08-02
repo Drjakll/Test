@@ -31,7 +31,7 @@
         }*/
 		var socket = io();
 		socket.on('newmsg', function(data) {
-			img.src = data.message;
+			img.src = URL.createObjectURL(data.message);
       })
 
     </script>
