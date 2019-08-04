@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -9,7 +10,7 @@
 <body>
 
     <img src="">
-
+	<div id = "div"></div>
     <script>
 
         // get img dom element
@@ -29,10 +30,13 @@
 			img.src = message.data;
 
         }*/
+		/*setInterval(function(){
+		}, 17);*/
+		
 		var socket = io();
-		socket.on('newmsg', function(data) {
-			img.src = URL.createObjectURL(data.message);
-      })
+		socket.on('image', function(data) {
+			img.src = "data:image/jpg;base64," + data;
+      });
 
     </script>
 
