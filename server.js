@@ -30,7 +30,7 @@ setInterval(function(){
 
 //const wsServer = new WebSocket.Server({ port: WS_PORT }, () => console.log(`WS server is listening at ws://localhost:${WS_PORT}`));
 
-
+console.log("working it");
 
 let connectedClients = [];
 
