@@ -9,7 +9,7 @@
   "author": "Justin",
   "license": "ISC",
   "dependencies": {
-    "ejs":"latest",
+	"ejs":"latest",
     "@ionic-native/speech-recognition": "^5.10.0",
     "artyom.js": "^1.0.6",
     "express": "^4.17.1",
@@ -22,6 +22,7 @@
     "tui-usinghelloworld": "^1.0.0",
     "voice-speech-recognition": "^1.1.2",
     "vui-ad-hoc-alexa-recognizer": "^1.5.175",
-    "ws": "^7.1.1"
+    "ws": "^7.1.1",
+	"opencv4nodejs":"latest"
   }
 }
