@@ -83,6 +83,7 @@ var num = 0;
 });*/
 
 app.get("/client", function(req, res){
+	console.log("Hello");
 	res.render("client");
 });
 /*
